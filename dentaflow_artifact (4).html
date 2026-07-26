@@ -274,7 +274,7 @@
     <p>Upload X-rays or radiographic images. Claude will analyse them and auto-populate the diagnosis field below with the clinical findings it identifies.</p>
     <div class="field">
       <label>X-ray / Radiograph Images</label>
-      <input type="file" id="xrayInput" accept="image/*" multiple style="border:1.5px solid var(--rule);border-radius:7px;padding:10px 13px;width:100%;font-family:'DM Sans',sans-serif;font-size:13px;background:var(--paper);">
+      <input type="file" id="xrayInput" accept="image/*" multiple style="border:1.5px solid var(--rule);border-radius:7px;padding:10px 13px;width:100%;font-family:'DM Sans',sans-serif;font-size:14px;">
     </div>
     <div id="xrayPreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;"></div>
     <div id="xrayStatus" style="font-size:12px;color:var(--muted);margin-bottom:10px;"></div>
@@ -315,7 +315,7 @@
     </div>
 
     <button class="btn-generate" id="btnGenerate" onclick="generatePlan()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6l-5 3.6 1.9-5.8L4 8.8h6.1z"></path></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8-5-3.6-5 3.6 1.9-5.8-4.9-3.6h6.1L12 3z"></path></svg>
       Generate Treatment Plan
     </button>
   </div>
@@ -341,11 +341,11 @@
 
     <div class="btn-row">
       <button class="btn-print" onclick="window.print()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 14h12a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z"></path></svg>
         Print / Save as PDF
       </button>
       <button class="btn-reset" onclick="resetForm()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-4.98"></path></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
         New Document
       </button>
     </div>
@@ -358,6 +358,8 @@
 </div>
 
 <script>
+const API_ENDPOINT = '/api/claude';
+
 const today = new Date();
 const dateStr = today.toLocaleDateString('en-GB', { day:'2-digit', month:'long', year:'numeric' });
 document.getElementById('headerDate').textContent = dateStr;
@@ -408,29 +410,22 @@ async function analyzeXrays() {
       imageBlocks.push({ type: 'image', source: { type: 'base64', media_type: mediaType, data: b64 } });
     }
 
-    const content = [
-      ...imageBlocks,
-      { type: 'text', text: `You are an experienced dentist reviewing radiographs. Examine these X-ray images carefully and list the clinical findings you observe (e.g. caries, bone loss, periapical lesions, missing teeth, impactions, restorations present, periodontal status, root morphology concerns).
+    const prompt = `You are an experienced dentist reviewing radiographs. Examine these X-ray images carefully and list the clinical findings you observe (e.g. caries, bone loss, periapical lesions, tooth anatomy, etc.).
 
 Return ONLY strict JSON, no markdown fences, no extra text:
 {
   "findings": "a clear, clinically precise summary of findings written as continuous text, referencing tooth numbers using the Universal Numbering System where identifiable",
   "confidence_note": "one short sentence noting that findings should be clinically verified by the treating dentist"
-}` }
-    ];
+}`;
 
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch(API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1500,
-        messages: [ { role: 'user', content } ]
-      })
+      body: JSON.stringify({ imageBlocks, prompt })
     });
 
     const data = await res.json();
-    if (!res.ok || data.error) throw new Error(data.error?.message || 'Analysis failed.');
+    if (!res.ok || data.error) throw new Error(data.error || 'Analysis failed.');
 
     const raw = data.content.map(b => b.text || '').join('');
     const jsonMatch = raw.match(/\{[\s\S]*\}/);
@@ -538,53 +533,33 @@ RETURN EXACTLY this JSON (no \`\`\`json, no comments):
 Write in clear, empathetic, educational English. Never mention specific monetary values. Do not use fear — use education.`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch(API_ENDPOINT, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 4000,
-        messages: [
-          { role: 'user', content: prompt }
-        ]
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
     });
 
     const data = await res.json();
     console.log('API response:', JSON.stringify(data, null, 2));
 
     if (!res.ok || data.error) {
-      const errMsg = data.error?.message || JSON.stringify(data);
-      throw new Error('API error: ' + errMsg);
+      throw new Error(data.error || 'API error');
     }
 
     if (!data.content || !data.content.length) {
-      throw new Error('Empty response from API: ' + JSON.stringify(data));
-    }
-
-    if (data.stop_reason === 'max_tokens') {
-      throw new Error('The response was cut off before finishing. Please try again.');
+      throw new Error('Empty response from API');
     }
 
     const raw = data.content.map(b => b.text || '').join('');
-    console.log('Raw text:', raw);
-
     const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('No JSON found in response: ' + raw);
+    if (!jsonMatch) throw new Error('No JSON found in response');
 
     let cleaned = jsonMatch[0]
-      .replace(/,\s*([}\]])/g, '$1')   // remove trailing commas before } or ]
-      .replace(/[\u201C\u201D]/g, '"') // normalize smart double quotes
-      .replace(/[\u2018\u2019]/g, "'"); // normalize smart single quotes
+      .replace(/,\s*([}\]])/g, '$1')
+      .replace(/[\u201C\u201D]/g, '"')
+      .replace(/[\u2018\u2019]/g, "'");
 
-    let plan;
-    try {
-      plan = JSON.parse(cleaned);
-    } catch (parseErr) {
-      throw new Error('Could not read the generated plan (formatting issue). Please try again. Details: ' + parseErr.message);
-    }
+    let plan = JSON.parse(cleaned);
     clearInterval(stInterval);
     renderOutput(plan, name, age, complaint);
 
