@@ -19,8 +19,11 @@ export default async function handler(req, res) {
     const { imageBlocks, prompt } = req.body;
     const API_KEY = process.env.ANTHROPIC_API_KEY;
 
+    console.log('API Key present:', !!API_KEY);
+    console.log('Prompt length:', prompt?.length);
+
     if (!API_KEY) {
-      return res.status(500).json({ error: 'API key not configured' });
+      return res.status(500).json({ error: 'API key not configured on server' });
     }
 
     const content = imageBlocks ? [
@@ -30,6 +33,16 @@ export default async function handler(req, res) {
       { type: 'text', text: prompt }
     ];
 
+    const requestBody = {
+      model: 'claude-3-5-sonnet-20241022',
+      max_tokens: imageBlocks ? 1500 : 4000,
+      messages: [
+        { role: 'user', content }
+      ]
+    };
+
+    console.log('Sending request to Anthropic...');
+
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -37,24 +50,19 @@ export default async function handler(req, res) {
         'x-api-key': API_KEY,
         'anthropic-version': '2023-06-01'
       },
-      body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
-        max_tokens: imageBlocks ? 1500 : 4000,
-        messages: [
-          { role: 'user', content }
-        ]
-      })
+      body: JSON.stringify(requestBody)
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      const error = await response.json();
-      return res.status(response.status).json({ error: error.error?.message || 'API error' });
+      console.error('Anthropic error:', data);
+      return res.status(response.status).json({ error: data.error?.message || 'API error' });
     }
 
-    const data = await response.json();
     return res.status(200).json(data);
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Server error:', error);
     return res.status(500).json({ error: error.message });
   }
 }
