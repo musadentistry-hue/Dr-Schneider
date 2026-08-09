@@ -3,26 +3,28 @@
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Treatment Plan — Clinical Document</title>
+<title>TreatIQ — AI Dental Treatment Planning</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --ink:       #1a1a2e;
-    --muted:     #6b7280;
-    --rule:      #e5e7eb;
-    --paper:     #fafaf8;
+    --ink:       #0f172a;
+    --muted:     #64748b;
+    --rule:      #dbe2ea;
+    --paper:     #f8fafc;
     --white:     #ffffff;
-    --phase1:    #1d4ed8;
-    --phase2:    #059669;
-    --phase3:    #7c3aed;
-    --phase4:    #d97706;
+    --brand:     #14cba8;
+    --brand-soft:#e9fbf7;
+    --phase1:    #14cba8;
+    --phase2:    #0ea5a0;
+    --phase3:    #2563eb;
+    --phase4:    #0f766e;
     --alert-bg:  #fff7ed;
     --alert-acc: #c2410c;
-    --invest-bg: #f0fdf4;
-    --invest-acc:#15803d;
+    --invest-bg: #ecfeff;
+    --invest-acc:#0f766e;
   }
 
   body {
@@ -41,7 +43,7 @@
   }
 
   .doc-header {
-    border-bottom: 2px solid var(--ink);
+    border-bottom: 2px solid var(--rule);
     padding-bottom: 20px;
     margin-bottom: 36px;
     display: flex;
@@ -50,13 +52,37 @@
     gap: 16px;
     flex-wrap: wrap;
   }
-  .doc-header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(22px, 4vw, 30px);
-    line-height: 1.15;
-    letter-spacing: -0.3px;
+  .brand-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
   }
-  .doc-header h1 em { font-style: italic; color: var(--phase1); }
+  .brand-mark {
+    width: 8px;
+    height: 72px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #22d3ee 0%, var(--brand) 100%);
+    box-shadow: 0 0 0 1px rgba(20, 203, 168, .15);
+    flex-shrink: 0;
+  }
+  .brand-block h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(34px, 6vw, 52px);
+    line-height: 1;
+    letter-spacing: -1.2px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .brand-block h1 .dot {
+    color: var(--brand);
+    font-weight: 700;
+  }
+  .brand-tagline {
+    margin-top: 8px;
+    font-size: 16px;
+    color: #1f2937;
+    letter-spacing: -.1px;
+  }
   .doc-meta { font-size: 12px; color: var(--muted); text-align: right; line-height: 1.8; }
   .doc-meta span { display: block; }
 
@@ -118,18 +144,18 @@
     display: none;
     align-items: center;
     gap: 10px;
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
+    background: var(--brand-soft);
+    border: 1px solid #a7f3d0;
     border-radius: 8px;
     padding: 12px 16px;
     font-size: 13px;
-    color: var(--phase1);
+    color: #0f766e;
     margin-bottom: 24px;
   }
   .status-bar.visible { display: flex; }
   .spinner {
-    width: 16px; height: 16px; border: 2px solid #bfdbfe;
-    border-top-color: var(--phase1); border-radius: 50%;
+    width: 16px; height: 16px; border: 2px solid #a7f3d0;
+    border-top-color: var(--brand); border-radius: 50%;
     animation: spin .7s linear infinite; flex-shrink:0;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -138,7 +164,7 @@
   #output.visible { display: block; }
 
   .patient-bar {
-    background: var(--ink);
+    background: linear-gradient(135deg, #0b1220 0%, #111827 55%, #0f172a 100%);
     color: #fff;
     border-radius: 10px;
     padding: 18px 24px;
@@ -262,9 +288,15 @@
 <div class="shell">
 
   <div class="doc-header">
-    <h1>Phased Treatment Plan<br><em>for Case Acceptance</em></h1>
+    <div class="brand-wrap">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <div class="brand-block">
+        <h1>TreatIQ<span class="dot">•</span></h1>
+        <div class="brand-tagline">The AI Layer for Dental Care</div>
+      </div>
+    </div>
     <div class="doc-meta">
-      <span>Clinical Document</span>
+      <span>TreatIQ Clinical Document</span>
       <span id="headerDate">07 July 2026</span>
     </div>
   </div>
@@ -352,7 +384,7 @@
   </div>
 
   <div class="doc-footer">
-    <span>AI-assisted document — review before presenting to patient</span>
+    <span>TreatIQ AI-assisted document — review before presenting to patient</span>
     <span id="footerDate">07 July 2026</span>
   </div>
 </div>
@@ -424,7 +456,14 @@ Return ONLY strict JSON, no markdown fences, no extra text:
       body: JSON.stringify({ imageBlocks, prompt })
     });
 
-    const data = await res.json();
+    const contentType = res.headers.get('content-type') || '';
+    let data;
+    if (contentType.includes('application/json')) {
+      data = await res.json();
+    } else {
+      const text = await res.text();
+      throw new Error(`Server returned non-JSON response: ${text.slice(0, 120)}`);
+    }
     if (!res.ok || data.error) throw new Error(data.error || 'Analysis failed.');
 
     const raw = data.content.map(b => b.text || '').join('');
@@ -539,7 +578,14 @@ Write in clear, empathetic, educational English. Never mention specific monetary
       body: JSON.stringify({ prompt })
     });
 
-    const data = await res.json();
+    const planContentType = res.headers.get('content-type') || '';
+    let data;
+    if (planContentType.includes('application/json')) {
+      data = await res.json();
+    } else {
+      const text = await res.text();
+      throw new Error(`Server returned non-JSON response: ${text.slice(0, 120)}`);
+    }
     console.log('API response:', JSON.stringify(data, null, 2));
 
     if (!res.ok || data.error) {
