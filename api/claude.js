@@ -16,32 +16,44 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { imageBlocks, prompt } = req.body;
     const API_KEY = process.env.ANTHROPIC_API_KEY;
-
-    console.log('API Key present:', !!API_KEY);
-    console.log('Prompt length:', prompt?.length);
 
     if (!API_KEY) {
       return res.status(500).json({ error: 'API key not configured on server' });
     }
 
-    const content = imageBlocks ? [
-      ...imageBlocks,
-      { type: 'text', text: prompt }
-    ] : [
-      { type: 'text', text: prompt }
-    ];
+    // Support two payload styles:
+    // 1) { imageBlocks, prompt }
+    // 2) { model, max_tokens, messages }
+    const { imageBlocks, prompt, model, max_tokens, messages } = req.body || {};
 
-    const requestBody = {
-      model: 'claude-sonnet-4-6',
-      max_tokens: imageBlocks ? 1500 : 4000,
-      messages: [
-        { role: 'user', content }
-      ]
-    };
+    let requestBody;
 
-    console.log('Sending request to Anthropic...');
+    const hasNativeMessages = Array.isArray(messages) && messages.length > 0;
+    if (hasNativeMessages) {
+      requestBody = {
+        model: model || 'claude-sonnet-4-6',
+        max_tokens: max_tokens || 4000,
+        messages
+      };
+    } else {
+      const textPrompt = typeof prompt === 'string' ? prompt : '';
+      const blocks = Array.isArray(imageBlocks) ? imageBlocks : [];
+
+      if (!textPrompt && blocks.length === 0) {
+        return res.status(400).json({ error: 'Invalid payload: provide either messages[] or prompt/imageBlocks.' });
+      }
+
+      const content = blocks.length
+        ? [...blocks, { type: 'text', text: textPrompt }]
+        : [{ type: 'text', text: textPrompt }];
+
+      requestBody = {
+        model: 'claude-sonnet-4-6',
+        max_tokens: blocks.length ? 1500 : 4000,
+        messages: [{ role: 'user', content }]
+      };
+    }
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -57,7 +69,10 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       console.error('Anthropic error:', data);
-      return res.status(response.status).json({ error: data.error?.message || 'API error' });
+      return res.status(response.status).json({
+        error: data?.error?.message || 'API error',
+        details: data
+      });
     }
 
     return res.status(200).json(data);
