@@ -2,7 +2,909 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><!DOCTYPE html>
+<!-- saved from url=(0061)file:///C:/Users/mschnei1/Downloads/treatment-plan%20(1).html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Treatment Plan — Clinical Document</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:       #1a1a2e;
+    --muted:     #6b7280;
+    --rule:      #e5e7eb;
+    --paper:     #fafaf8;
+    --white:     #ffffff;
+    --phase1:    #1d4ed8;
+    --phase2:    #059669;
+    --phase3:    #7c3aed;
+    --phase4:    #d97706;
+    --alert-bg:  #fff7ed;
+    --alert-acc: #c2410c;
+    --invest-bg: #f0fdf4;
+    --invest-acc:#15803d;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  .shell {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  .doc-header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 20px;
+    margin-bottom: 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .doc-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(22px, 4vw, 30px);
+    line-height: 1.15;
+    letter-spacing: -0.3px;
+  }
+  .doc-header h1 em { font-style: italic; color: var(--phase1); }
+  .doc-meta { font-size: 12px; color: var(--muted); text-align: right; line-height: 1.8; }
+  .doc-meta span { display: block; }
+
+  .disclaimer-banner {
+    background: #fffbeb;
+    border: 1.5px solid #fde68a;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #78350f;
+  }
+  .disclaimer-banner strong { color: #92400e; }
+  .disclaimer-banner ul { margin: 6px 0 4px 18px; }
+  .disclaimer-banner li { margin-bottom: 3px; }
+  .disclaimer-banner .tos-link { display: inline-block; margin-top: 8px; font-size: 12px; font-weight: 600; color: #92400e; text-decoration: underline; cursor: pointer; background: none; border: none; padding: 0; }
+
+  .tos-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(26,26,46,0.55);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .tos-overlay.visible { display: flex; }
+  .tos-modal {
+    background: var(--white);
+    border-radius: 12px;
+    max-width: 560px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 32px;
+  }
+  .tos-modal h2 { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 16px; }
+  .tos-modal h3 { font-size: 13px; margin: 18px 0 6px; color: var(--ink); }
+  .tos-modal p, .tos-modal li { font-size: 13px; line-height: 1.7; color: var(--muted); }
+  .tos-modal ul { margin-left: 18px; margin-bottom: 10px; }
+  .tos-modal .btn-close-tos { margin-top: 20px; width: 100%; padding: 10px; border-radius: 7px; border: none; background: var(--ink); color: white; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; }
+
+  .plan-disclaimer {
+    background: #fffbeb;
+    border: 1.5px solid #fde68a;
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-top: 24px;
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: #78350f;
+  }
+  .plan-disclaimer strong { color: #92400e; }
+
+  .xray-notice {
+    background: #fef2f2;
+    border: 1.5px solid #fecaca;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #991b1b;
+  }
+  .xray-notice strong { color: #7f1d1d; }
+
+
+  .input-card {
+    background: var(--white);
+    border: 1.5px solid var(--rule);
+    border-radius: 10px;
+    padding: 28px 28px 24px;
+    margin-bottom: 36px;
+  }
+  .input-card h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    margin-bottom: 4px;
+  }
+  .input-card p { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+
+  label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+
+  .field { margin-bottom: 16px; }
+
+  input[type=text], textarea {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    border: 1.5px solid var(--rule);
+    border-radius: 7px;
+    padding: 10px 13px;
+    background: var(--paper);
+    color: var(--ink);
+    resize: vertical;
+    transition: border-color .15s;
+  }
+  input[type=text]:focus, textarea:focus {
+    outline: none; border-color: var(--phase1);
+  }
+  textarea { min-height: 100px; }
+
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width:540px){ .row2{ grid-template-columns:1fr; } }
+
+  .btn-generate {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--ink);
+    color: #fff;
+    border: none; border-radius: 8px;
+    padding: 12px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: opacity .15s;
+  }
+  .btn-generate:hover { opacity: .85; }
+  .btn-generate:disabled { opacity: .45; cursor: not-allowed; }
+  .btn-generate svg { flex-shrink:0; }
+
+  .status-bar {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--phase1);
+    margin-bottom: 24px;
+  }
+  .status-bar.visible { display: flex; }
+  .spinner {
+    width: 16px; height: 16px; border: 2px solid #bfdbfe;
+    border-top-color: var(--phase1); border-radius: 50%;
+    animation: spin .7s linear infinite; flex-shrink:0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  #output { display: none; }
+  #output.visible { display: block; }
+
+  .patient-bar {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 10px;
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .patient-bar .name { font-family:'DM Serif Display',serif; font-size: 18px; }
+  .patient-bar .sub { font-size: 12px; opacity: .6; margin-top: 2px; }
+  .patient-bar .date-box { text-align: right; font-size: 12px; opacity: .65; }
+
+  .phases { display: flex; flex-direction: column; gap: 20px; margin-bottom: 40px; }
+
+  .phase-block {
+    background: var(--white);
+    border: 1.5px solid var(--rule);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border-bottom: 1.5px solid var(--rule);
+  }
+  .phase-badge {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #fff;
+    flex-shrink:0;
+  }
+  .phase-title { font-family:'DM Serif Display',serif; font-size: 16px; }
+  .phase-subtitle { font-size: 11px; color: var(--muted); margin-top: 1px; letter-spacing:.04em; text-transform:uppercase; }
+
+  .phase-body { padding: 20px; display: grid; gap: 16px; }
+  .phase-section h4 { font-size: 11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color: var(--muted); margin-bottom: 6px; }
+  .phase-section p { font-size: 14px; line-height: 1.65; }
+
+  .p1 .phase-badge { background: var(--phase1); }
+  .p1 .phase-title { color: var(--phase1); }
+  .p2 .phase-badge { background: var(--phase2); }
+  .p2 .phase-title { color: var(--phase2); }
+  .p3 .phase-badge { background: var(--phase3); }
+  .p3 .phase-title { color: var(--phase3); }
+  .p4 .phase-badge { background: var(--phase4); }
+  .p4 .phase-title { color: var(--phase4); }
+
+  .callout {
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .callout h3 {
+    font-family:'DM Serif Display',serif;
+    font-size: 17px;
+    margin-bottom: 12px;
+  }
+  .callout p { font-size: 14px; line-height: 1.7; }
+  .callout p + p { margin-top: 10px; }
+
+  .callout-delay {
+    background: var(--alert-bg);
+    border: 1.5px solid #fed7aa;
+  }
+  .callout-delay h3 { color: var(--alert-acc); }
+
+  .callout-invest {
+    background: var(--invest-bg);
+    border: 1.5px solid #bbf7d0;
+  }
+  .callout-invest h3 { color: var(--invest-acc); }
+
+  .callout-refs {
+    background: #f8fafc;
+    border: 1.5px solid var(--rule);
+  }
+  .callout-refs h3 { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'DM Sans', sans-serif; font-weight: 600; }
+  .callout-refs ol { padding-left: 20px; }
+  .callout-refs li { font-size: 12.5px; line-height: 1.6; color: var(--muted); margin-bottom: 8px; }
+  .callout-refs li a { color: var(--phase1); text-decoration: none; }
+  .callout-refs li a:hover { text-decoration: underline; }
+  .callout-refs .refs-note { font-size: 11.5px; color: var(--muted); margin-top: 10px; font-style: italic; }
+  .callout-refs .badge-high-tier { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #7c3aed; background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 4px; padding: 1px 6px; margin-right: 6px; }
+  .callout-refs .badge-standard { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #1d4ed8; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 4px; padding: 1px 6px; margin-right: 6px; }
+
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px; }
+  .btn-print {
+    display: flex; align-items: center; gap: 7px;
+    border: 1.5px solid var(--ink);
+    background: transparent; color: var(--ink);
+    border-radius: 8px; padding: 10px 18px;
+    font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600;
+    cursor: pointer; transition: background .15s, color .15s;
+  }
+  .btn-print:hover { background: var(--ink); color: #fff; }
+  .btn-reset {
+    display: flex; align-items: center; gap: 7px;
+    border: 1.5px solid var(--rule);
+    background: transparent; color: var(--muted);
+    border-radius: 8px; padding: 10px 18px;
+    font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500;
+    cursor: pointer;
+  }
+
+  .doc-footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media print {
+    .input-card, .btn-generate, .btn-row, .status-bar, .disclaimer-banner, .tos-overlay { display: none !important; }
+    #output { display: block !important; }
+    body { background: #fff; }
+    .shell { padding: 16px; }
+    .phase-block { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="doc-header">
+    <h1>Phased Treatment Plan<br><em>for Case Acceptance</em></h1>
+    <div class="doc-meta">
+      <span>Clinical Document</span>
+      <span id="headerDate">07 July 2026</span>
+    </div>
+  </div>
+
+  <div class="disclaimer-banner">
+    <strong>TreatIQ is a decision-support / educational tool only.</strong>
+    <ul>
+      <li>It does not diagnose, prescribe, or replace the licensed dentist's clinical judgment.</li>
+      <li>All recommendations must be independently reviewed, verified, and approved by a qualified dental professional.</li>
+      <li>Evidence-based literature is provided for reference only; strength of evidence and applicability to the individual patient remain the clinician's responsibility.</li>
+      <li>No guarantee of accuracy, completeness, or clinical outcomes.</li>
+    </ul>
+    <button class="tos-link" onclick="document.getElementById('tosOverlay').classList.add('visible')">Read full Terms of Use</button>
+  </div>
+
+  <div class="tos-overlay" id="tosOverlay">
+    <div class="tos-modal">
+      <h2>Terms of Use</h2>
+      <p>By using TreatIQ, you acknowledge and agree to the following:</p>
+
+      <h3>1. Decision-support tool, not a clinical authority</h3>
+      <p>TreatIQ is a decision-support and educational tool intended to assist licensed dental professionals in organising and communicating treatment planning information. It does not diagnose conditions, prescribe treatment, or replace the clinical judgment of a licensed dentist.</p>
+
+      <h3>2. Mandatory professional review</h3>
+      <p>Every recommendation, finding, or phase generated by this tool must be independently reviewed, verified, and approved by a qualified dental professional before being presented to or acted upon by a patient. TreatIQ output is a draft for clinician review — not a final clinical determination.</p>
+
+      <h3>3. Evidence references are informational</h3>
+      <p>Literature references (including systematic reviews and indexed peer-reviewed studies) are surfaced for informational purposes only. The strength of that evidence, its currency, and its applicability to any individual patient's specific clinical presentation remain solely the responsibility of the treating clinician.</p>
+
+      <h3>4. No guarantee of accuracy or outcomes</h3>
+      <p>TreatIQ makes no warranty, express or implied, regarding the accuracy, completeness, or reliability of generated content, radiographic analysis, or literature matching. No guarantee is made regarding clinical outcomes resulting from any treatment plan produced or informed by this tool.</p>
+
+      <h3>5. Radiographic analysis limitations</h3>
+      <p>Any AI-generated interpretation of uploaded radiographs is a preliminary aid only and must be clinically verified against the original images by the treating dentist prior to diagnosis or treatment planning.</p>
+
+      <button class="btn-close-tos" onclick="document.getElementById('tosOverlay').classList.remove('visible')">Close</button>
+    </div>
+  </div>
+
+  <div class="input-card">
+    <h2>Radiographic Analysis</h2>
+    <p>Upload X-rays or radiographic images. The AI will generate preliminary observations to help populate the diagnosis field below — these are not a diagnosis and must be independently verified against the original images.</p>
+    <div class="xray-notice">
+      <strong>Preliminary aid only, not a diagnostic tool.</strong> AI-generated image observations are unverified and may be incomplete or inaccurate. The treating dentist must independently review the original radiographs and confirm every finding before it informs diagnosis or treatment planning.
+    </div>
+    <div class="field">
+      <label>X-ray / Radiograph Images</label>
+      <input type="file" id="xrayInput" accept="image/*" multiple style="border:1.5px solid var(--rule);border-radius:7px;padding:10px 13px;width:100%;font-family:'DM Sans',sans-serif;font-size:13px;background:var(--paper);">
+    </div>
+    <div id="xrayPreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;"></div>
+    <div id="xrayStatus" style="font-size:12px;color:var(--muted);margin-bottom:10px;"></div>
+    <button class="btn-print" id="btnAnalyzeXray" onclick="analyzeXrays()" style="display:none;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      Analyse X-rays
+    </button>
+  </div>
+
+  <div class="input-card">
+    <h2>Case Information</h2>
+    <p>Fill in the patient details and clinical findings. The AI will structure a personalised treatment plan across four phases.</p>
+
+    <div class="row2">
+      <div class="field">
+        <label>Patient Name</label>
+        <input type="text" id="patientName" placeholder="e.g. Maria Silva">
+      </div>
+      <div class="field">
+        <label>Age</label>
+        <input type="text" id="patientAge" placeholder="e.g. 42 years old">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Chief Complaint / Reason for Visit</label>
+      <input type="text" id="chiefComplaint" placeholder="e.g. pain when chewing, sensitivity, aesthetic concerns">
+    </div>
+
+    <div class="field">
+      <label>Diagnosis &amp; Clinical Findings</label>
+      <textarea id="diagnosis" placeholder="List the problems identified: cavities, periodontitis, missing teeth, wear, bruxism, aesthetic needs, etc."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Additional Notes (optional)</label>
+      <textarea id="notes" style="min-height:70px" placeholder="Relevant medical history, patient preferences, financial priorities..."></textarea>
+    </div>
+
+    <button class="btn-generate" id="btnGenerate" onclick="generatePlan()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6l-5 3.6 1.9-5.8L4 8.8h6.1z"></path></svg>
+      Generate Treatment Plan
+    </button>
+  </div>
+
+  <div class="status-bar" id="statusBar">
+    <div class="spinner"></div>
+    <span id="statusText">Analysing clinical findings…</span>
+  </div>
+
+  <div id="output">
+    <div class="patient-bar">
+      <div>
+        <div class="name" id="outName">—</div>
+        <div class="sub" id="outSub">—</div>
+      </div>
+      <div class="date-box" id="outDate">—</div>
+    </div>
+
+    <div class="phases" id="phasesContainer"></div>
+
+    <div id="delayBox" class="callout callout-delay"></div>
+    <div id="investBox" class="callout callout-invest"></div>
+    <div id="refsBox" class="callout callout-refs" style="display:none;"></div>
+
+    <div class="plan-disclaimer">
+      <strong>Important:</strong> This document was generated by TreatIQ, an AI-assisted decision-support and educational tool. It does not diagnose, prescribe, or replace the licensed dentist's clinical judgment. All recommendations must be independently reviewed, verified, and approved by a qualified dental professional prior to case presentation or treatment. Evidence-based references are provided for informational purposes only — the strength of evidence and its applicability to this individual patient remain the treating clinician's responsibility. No guarantee is made regarding the accuracy, completeness, or clinical outcomes of the content above.
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-print" onclick="window.print()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Print / Save as PDF
+      </button>
+      <button class="btn-reset" onclick="resetForm()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-4.98"></path></svg>
+        New Document
+      </button>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>AI-assisted document — review before presenting to patient</span>
+    <span id="footerDate">07 July 2026</span>
+  </div>
+</div>
+
+<script>
+const today = new Date();
+const dateStr = today.toLocaleDateString('en-GB', { day:'2-digit', month:'long', year:'numeric' });
+document.getElementById('headerDate').textContent = dateStr;
+document.getElementById('footerDate').textContent = dateStr;
+
+let xrayFiles = [];
+
+document.getElementById('xrayInput').addEventListener('change', async (e) => {
+  xrayFiles = Array.from(e.target.files);
+  const preview = document.getElementById('xrayPreview');
+  preview.innerHTML = '';
+  const btn = document.getElementById('btnAnalyzeXray');
+
+  if (!xrayFiles.length) { btn.style.display = 'none'; return; }
+
+  for (const file of xrayFiles) {
+    const url = URL.createObjectURL(file);
+    const img = document.createElement('img');
+    img.src = url;
+    img.style.cssText = 'width:70px;height:70px;object-fit:cover;border-radius:6px;border:1.5px solid var(--rule);';
+    preview.appendChild(img);
+  }
+  btn.style.display = 'flex';
+  document.getElementById('xrayStatus').textContent = `${xrayFiles.length} image(s) ready to analyse.`;
+});
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function analyzeXrays() {
+  if (!xrayFiles.length) return;
+  const btn = document.getElementById('btnAnalyzeXray');
+  const status = document.getElementById('xrayStatus');
+  btn.disabled = true;
+  status.textContent = 'Analysing radiographs…';
+
+  try {
+    const imageBlocks = [];
+    for (const file of xrayFiles) {
+      const b64 = await fileToBase64(file);
+      const mediaType = file.type || 'image/jpeg';
+      imageBlocks.push({ type: 'image', source: { type: 'base64', media_type: mediaType, data: b64 } });
+    }
+
+    const content = [
+      ...imageBlocks,
+      { type: 'text', text: `You are assisting a licensed dentist by generating preliminary, non-diagnostic observations from radiographs, for that dentist's independent clinical review. Do not state conclusions as confirmed diagnoses. Examine these X-ray images and describe the observations you note (e.g. possible caries, apparent bone loss, possible periapical lesions, missing teeth, impactions, restorations present, periodontal indicators, root morphology notes).
+
+Return ONLY strict JSON, no markdown fences, no extra text:
+{
+  "findings": "a clear, hedged summary of OBSERVATIONS (not diagnoses) written as continuous text, using language like 'appears to show' / 'possible' / 'consistent with', referencing tooth numbers using the Universal Numbering System where identifiable",
+  "confidence_note": "one short sentence reminding the reader these are preliminary AI-generated observations, not a diagnosis, and must be independently verified by the treating dentist against the original images before use"
+}` }
+    ];
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1500,
+        messages: [ { role: 'user', content } ]
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok || data.error) throw new Error(data.error?.message || 'Analysis failed.');
+
+    const raw = data.content.map(b => b.text || '').join('');
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No JSON found in response.');
+
+    const cleaned = jsonMatch[0]
+      .replace(/,\s*([}\]])/g, '$1')
+      .replace(/[\u201C\u201D]/g, '"')
+      .replace(/[\u2018\u2019]/g, "'");
+
+    const result = JSON.parse(cleaned);
+
+    const diagnosisField = document.getElementById('diagnosis');
+    const existing = diagnosisField.value.trim();
+    diagnosisField.value = existing
+      ? `${existing}\n\nPreliminary AI-generated radiographic observations (UNVERIFIED — confirm against original images before use): ${result.findings}`
+      : `Preliminary AI-generated radiographic observations (UNVERIFIED — confirm against original images before use): ${result.findings}`;
+
+    status.textContent = result.confidence_note || 'Preliminary observations added below — these are not a diagnosis and must be independently verified against the original images.';
+    status.style.color = '#b45309';
+    status.style.fontWeight = '600';
+  } catch (e) {
+    console.error('X-ray analysis error:', e);
+    status.textContent = 'Error analysing X-rays: ' + e.message;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function literatureSearch(term, maxResults) {
+  const url = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${encodeURIComponent(term)}&retmax=${maxResults}&sort=relevance&retmode=json`;
+  const res = await fetch(url);
+  const data = await res.json();
+  return data.esearchresult?.idlist || [];
+}
+
+async function literatureSummaries(ids) {
+  if (!ids.length) return {};
+  const url = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`;
+  const res = await fetch(url);
+  const data = await res.json();
+  return data.result || {};
+}
+
+function buildReference(id, item, sourceLabel) {
+  if (!item) return null;
+  const authors = (item.authors || []).slice(0, 3).map(a => a.name).join(', ');
+  const authorStr = authors + ((item.authors || []).length > 3 ? ', et al.' : '');
+  return {
+    refId: id,
+    title: item.title || 'Untitled',
+    journal: item.fulljournalname || item.source || '',
+    year: (item.pubdate || '').split(' ')[0] || '',
+    authors: authorStr,
+    url: `https://pubmed.ncbi.nlm.nih.gov/${id}/`,
+    source: sourceLabel
+  };
+}
+
+async function fetchEvidenceReferences(query, totalMax = 5, highTierMax = 2) {
+  try {
+    // Prioritise the highest tier of evidence (systematic reviews) first
+    const highTierTerm = `${query} AND (dentistry[MeSH] OR dental) AND "Cochrane Database Syst Rev"[Journal]`;
+    const highTierIds = await literatureSearch(highTierTerm, highTierMax);
+
+    // Fill remaining slots with broader indexed dental literature, excluding anything already found
+    const generalTerm = `${query} AND (dentistry[MeSH] OR dental)`;
+    const generalIdsRaw = await literatureSearch(generalTerm, totalMax);
+    const generalIds = generalIdsRaw.filter(id => !highTierIds.includes(id)).slice(0, Math.max(totalMax - highTierIds.length, 0));
+
+    const allIds = [...highTierIds, ...generalIds];
+    if (!allIds.length) return [];
+
+    const summaries = await literatureSummaries(allIds);
+
+    const highTierRefs = highTierIds.map(id => buildReference(id, summaries[id], 'Systematic Review')).filter(Boolean);
+    const generalRefs = generalIds.map(id => buildReference(id, summaries[id], 'Literature')).filter(Boolean);
+
+    return [...highTierRefs, ...generalRefs];
+  } catch (e) {
+    console.error('Evidence lookup error:', e);
+    return [];
+  }
+}
+
+const PHASES = [
+  { key:'phase1', label:'Phase 1', title:'Immediate Priority', cls:'p1', badge:'P1' },
+  { key:'phase2', label:'Phase 2', title:'Stabilisation', cls:'p2', badge:'P2' },
+  { key:'phase3', label:'Phase 3', title:'Rehabilitation', cls:'p3', badge:'P3' },
+  { key:'phase4', label:'Phase 4', title:'Aesthetics & Optimisation', cls:'p4', badge:'P4' },
+];
+
+async function generatePlan() {
+  const name      = document.getElementById('patientName').value.trim();
+  const age       = document.getElementById('patientAge').value.trim();
+  const complaint = document.getElementById('chiefComplaint').value.trim();
+  const diagnosis = document.getElementById('diagnosis').value.trim();
+  const notes     = document.getElementById('notes').value.trim();
+
+  if (!diagnosis) { alert('Please describe the diagnosis and clinical findings.'); return; }
+
+  const btn = document.getElementById('btnGenerate');
+  const status = document.getElementById('statusBar');
+  btn.disabled = true;
+  status.classList.add('visible');
+  document.getElementById('output').classList.remove('visible');
+
+  const statuses = [
+    'Analysing clinical findings…',
+    'Searching medical literature…',
+    'Structuring treatment phases…',
+    'Drafting rationale and benefits…',
+    'Finalising document…',
+  ];
+  let si = 0;
+  const stInterval = setInterval(() => {
+    si = (si + 1) % statuses.length;
+    document.getElementById('statusText').textContent = statuses[si];
+  }, 1800);
+
+  document.getElementById('statusText').textContent = 'Searching medical literature…';
+  const evidenceQuery = [complaint, diagnosis].filter(Boolean).join(' ');
+  const references = await fetchEvidenceReferences(evidenceQuery);
+  window.__lastReferences = references;
+
+  const refsBlock = references.length
+    ? `\n\nSUPPORTING LITERATURE (systematic reviews are the highest tier of evidence and are listed first, followed by other indexed peer-reviewed literature — cite by number in brackets like [1] within the relevant "benefits", "functional", "protection", "prevention" or "longevity" fields ONLY where a finding directly reflects it; do not force citations into every field, and never invent findings not supported by these abstracts' subject matter):\n${references.map((r, i) => `[${i + 1}] (${r.source}) ${r.authors} (${r.year}). ${r.title}. ${r.journal}.`).join('\n')}`
+    : '';
+
+  const prompt = `You are an experienced dentist specialised in patient communication. Create a phased treatment plan structured as strict JSON only — no text outside the JSON, no markdown fences.
+
+CASE DATA:
+- Patient: ${name || 'not provided'}, ${age || 'age not provided'}
+- Chief complaint: ${complaint || 'not provided'}
+- Diagnosis / Findings: ${diagnosis}
+- Notes: ${notes || 'none'}${refsBlock}
+
+RETURN EXACTLY this JSON (no \`\`\`json, no comments):
+{
+  "phase1": {
+    "procedures": "descriptive text of what will be done",
+    "urgency": "why this is needed now",
+    "benefits": "expected benefits for the patient"
+  },
+  "phase2": {
+    "procedures": "descriptive text",
+    "protection": "how this protects oral health",
+    "benefits": "expected benefits"
+  },
+  "phase3": {
+    "restorations": "what will be restored",
+    "functional": "functional improvements",
+    "benefits": "long-term benefits"
+  },
+  "phase4": {
+    "options": "optional aesthetic treatments",
+    "smile": "smile improvements",
+    "refinements": "final refinements"
+  },
+  "delay": {
+    "progression": "how problems progress without treatment",
+    "complexity": "how treatment becomes more complex over time",
+    "costs": "potential impact on future costs — educational, not alarming"
+  },
+  "investment": {
+    "function": "functional benefits for chewing and speech",
+    "comfort": "improvement in comfort and wellbeing",
+    "prevention": "what is prevented with proactive treatment",
+    "longevity": "long-term oral health outlook"
+  }
+}
+
+Write in clear, empathetic, educational English. Never mention specific monetary values. Do not use fear — use education. Frame this as a draft proposal for the treating dentist's review and clinical judgment, not as a finalised or authoritative treatment order — phrase recommendations as "the plan below is proposed for..." or "recommended pending clinician confirmation" rather than presenting phases as already-decided medical fact.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 4000,
+        messages: [
+          { role: 'user', content: prompt }
+        ]
+      })
+    });
+
+    const data = await res.json();
+    console.log('API response:', JSON.stringify(data, null, 2));
+
+    if (!res.ok || data.error) {
+      const errMsg = data.error?.message || JSON.stringify(data);
+      throw new Error('API error: ' + errMsg);
+    }
+
+    if (!data.content || !data.content.length) {
+      throw new Error('Empty response from API: ' + JSON.stringify(data));
+    }
+
+    if (data.stop_reason === 'max_tokens') {
+      throw new Error('The response was cut off before finishing. Please try again.');
+    }
+
+    const raw = data.content.map(b => b.text || '').join('');
+    console.log('Raw text:', raw);
+
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No JSON found in response: ' + raw);
+
+    let cleaned = jsonMatch[0]
+      .replace(/,\s*([}\]])/g, '$1')   // remove trailing commas before } or ]
+      .replace(/[\u201C\u201D]/g, '"') // normalize smart double quotes
+      .replace(/[\u2018\u2019]/g, "'"); // normalize smart single quotes
+
+    let plan;
+    try {
+      plan = JSON.parse(cleaned);
+    } catch (parseErr) {
+      throw new Error('Could not read the generated plan (formatting issue). Please try again. Details: ' + parseErr.message);
+    }
+    clearInterval(stInterval);
+    renderOutput(plan, name, age, complaint);
+
+  } catch(e) {
+    clearInterval(stInterval);
+    console.error('Generation error:', e);
+    document.getElementById('statusText').textContent = 'Error: ' + e.message;
+    document.getElementById('statusBar').style.background = '#fff1f2';
+    document.getElementById('statusBar').style.borderColor = '#fecdd3';
+    document.getElementById('statusBar').style.color = '#be123c';
+    document.querySelector('.spinner').style.display = 'none';
+    btn.disabled = false;
+  }
+}
+
+function renderOutput(plan, name, age, complaint) {
+  document.getElementById('outName').textContent = name || 'Patient';
+  document.getElementById('outSub').textContent = [age, complaint].filter(Boolean).join(' · ') || 'Treatment Plan';
+  document.getElementById('outDate').innerHTML = `Issued on<br><strong>${dateStr}</strong>`;
+
+  const container = document.getElementById('phasesContainer');
+  container.innerHTML = '';
+
+  const phaseContent = [
+    { ph: PHASES[0], sections: [
+      { label:'Procedures', text: plan.phase1?.procedures },
+      { label:'Why now', text: plan.phase1?.urgency },
+      { label:'Expected benefits', text: plan.phase1?.benefits },
+    ]},
+    { ph: PHASES[1], sections: [
+      { label:'Procedures', text: plan.phase2?.procedures },
+      { label:'Oral health protection', text: plan.phase2?.protection },
+      { label:'Expected benefits', text: plan.phase2?.benefits },
+    ]},
+    { ph: PHASES[2], sections: [
+      { label:'Planned restorations', text: plan.phase3?.restorations },
+      { label:'Functional improvements', text: plan.phase3?.functional },
+      { label:'Long-term benefits', text: plan.phase3?.benefits },
+    ]},
+    { ph: PHASES[3], sections: [
+      { label:'Aesthetic options', text: plan.phase4?.options },
+      { label:'Smile improvements', text: plan.phase4?.smile },
+      { label:'Final refinements', text: plan.phase4?.refinements },
+    ]},
+  ];
+
+  phaseContent.forEach(({ ph, sections }) => {
+    const block = document.createElement('div');
+    block.className = `phase-block ${ph.cls}`;
+    block.innerHTML = `
+      <div class="phase-header">
+        <div class="phase-badge">${ph.badge}</div>
+        <div>
+          <div class="phase-title">${ph.title}</div>
+          <div class="phase-subtitle">${ph.label}</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        ${sections.map(s => s.text ? `<div class="phase-section"><h4>${s.label}</h4><p>${s.text}</p></div>` : '').join('')}
+      </div>`;
+    container.appendChild(block);
+  });
+
+  const d = plan.delay;
+  document.getElementById('delayBox').innerHTML = `
+    <h3>What may happen if we delay</h3>
+    ${d?.progression ? `<p><strong>Problem progression:</strong> ${d.progression}</p>` : ''}
+    ${d?.complexity  ? `<p><strong>Increased complexity:</strong> ${d.complexity}</p>` : ''}
+    ${d?.costs       ? `<p><strong>Impact on future costs:</strong> ${d.costs}</p>` : ''}
+  `;
+
+  const inv = plan.investment;
+  document.getElementById('investBox').innerHTML = `
+    <h3>Investing in long-term health</h3>
+    ${inv?.function   ? `<p><strong>Function:</strong> ${inv.function}</p>` : ''}
+    ${inv?.comfort    ? `<p><strong>Comfort:</strong> ${inv.comfort}</p>` : ''}
+    ${inv?.prevention ? `<p><strong>Prevention:</strong> ${inv.prevention}</p>` : ''}
+    ${inv?.longevity  ? `<p><strong>Longevity:</strong> ${inv.longevity}</p>` : ''}
+  `;
+
+  const refsBox = document.getElementById('refsBox');
+  const references = window.__lastReferences || [];
+  if (references.length) {
+    refsBox.style.display = 'block';
+    refsBox.innerHTML = `
+      <h3>Supporting Literature</h3>
+      <ol>
+        ${references.map(r => {
+          const badgeClass = r.source === 'Systematic Review' ? 'badge-high-tier' : 'badge-standard';
+          const badgeText = r.source === 'Systematic Review' ? 'Systematic Review' : 'Literature';
+          return `<li><span class="${badgeClass}">${badgeText}</span><a href="${r.url}" target="_blank" rel="noopener">${r.authors} (${r.year}). ${r.title}. ${r.journal}. Ref ID: ${r.refId}</a></li>`;
+        }).join('')}
+      </ol>
+      <div class="refs-note">Retrieved automatically from indexed medical literature based on the chief complaint and diagnosis, with systematic reviews (the highest tier of evidence) prioritised where available. Relevance to this specific case should be verified by the treating clinician — this is not a substitute for a full literature review.</div>`;
+  } else {
+    refsBox.style.display = 'none';
+    refsBox.innerHTML = '';
+  }
+
+  document.getElementById('statusBar').classList.remove('visible');
+  document.getElementById('output').classList.add('visible');
+  document.getElementById('btnGenerate').disabled = false;
+
+  setTimeout(() => document.getElementById('output').scrollIntoView({ behavior:'smooth', block:'start' }), 100);
+}
+
+function resetForm() {
+  document.getElementById('output').classList.remove('visible');
+  window.__lastReferences = [];
+  document.getElementById('refsBox').style.display = 'none';
+  document.getElementById('refsBox').innerHTML = '';
+  document.getElementById('patientName').value = '';
+  document.getElementById('patientAge').value = '';
+  document.getElementById('chiefComplaint').value = '';
+  document.getElementById('diagnosis').value = '';
+  document.getElementById('notes').value = '';
+  xrayFiles = [];
+  document.getElementById('xrayInput').value = '';
+  document.getElementById('xrayPreview').innerHTML = '';
+  document.getElementById('xrayStatus').textContent = '';
+  document.getElementById('btnAnalyzeXray').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+
+</body></html>
     <title>DentaFlow - Dental Treatment Planning Tool</title>
     <style>
         * {
