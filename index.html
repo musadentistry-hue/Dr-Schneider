@@ -6,180 +6,222 @@
   <title>TreatIQ — Dental Treatment Plan Support</title>
   <style>
     :root {
-      --ink: #1a1a2e;
-      --muted: #6b7280;
-      --paper: #fafaf8;
+      --ink: #0f172a;
+      --muted: #475569;
+      --paper: #f8fafc;
       --white: #ffffff;
-      --line: #e5e7eb;
-      --accent: #1d4ed8;
-      --accent-hover: #1e40af;
+      --line: #e2e8f0;
+      --accent: #0ea5a4;
+      --accent-dark: #0b7f7f;
+      --notice-bg: #fffbeb;
+      --notice-line: #fde68a;
+      --notice-ink: #78350f;
+      --radius: 18px;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: var(--paper);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 500px at 20% -10%, #ccfbf1 0%, transparent 55%),
+        radial-gradient(1000px 500px at 100% 0%, #dbeafe 0%, transparent 50%),
+        var(--paper);
       color: var(--ink);
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
     .wrap {
-      max-width: 900px;
+      max-width: 980px;
       margin: 0 auto;
-      padding: 48px 24px 72px;
+      padding: 36px 20px 72px;
     }
-
-    h1, h2 {
-      line-height: 1.25;
-      margin: 0 0 12px;
-    }
-
-    h1 { font-size: clamp(30px, 5vw, 42px); }
-    h2 { font-size: clamp(20px, 3vw, 26px); margin-top: 32px; }
-
-    p { margin: 0 0 14px; }
 
     .hero {
-      background: var(--white);
+      background: linear-gradient(160deg, rgba(255,255,255,0.98), rgba(255,255,255,0.92));
       border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 28px;
-      margin-bottom: 24px;
+      border-radius: var(--radius);
+      padding: 36px 30px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      margin-bottom: 22px;
     }
 
-    .notice {
-      background: #fffbeb;
-      border: 1.5px solid #fde68a;
+    .logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .logo {
+      width: min(560px, 100%);
+      height: auto;
+      display: block;
       border-radius: 12px;
-      padding: 16px 18px;
+      border: 1px solid var(--line);
+      background: #fff;
     }
 
-    ul { margin: 10px 0 0 20px; }
-    li { margin-bottom: 6px; }
+    h1 {
+      margin: 0;
+      text-align: center;
+      font-size: clamp(30px, 5vw, 46px);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .subtitle {
+      margin: 12px auto 0;
+      max-width: 780px;
+      text-align: center;
+      color: var(--muted);
+      font-size: clamp(16px, 2vw, 19px);
+    }
+
+    .lead {
+      margin: 20px auto 0;
+      max-width: 760px;
+      text-align: center;
+      color: #1e293b;
+    }
 
     .btn-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
       margin-top: 24px;
+      display: flex;
+      justify-content: center;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border-radius: 10px;
-      padding: 12px 18px;
-      font-weight: 600;
+      border-radius: 12px;
+      padding: 13px 22px;
+      font-weight: 700;
       text-decoration: none;
       border: 1px solid transparent;
+      transition: transform .08s ease, box-shadow .2s ease, background .2s ease;
     }
+
+    .btn:active { transform: translateY(1px); }
 
     .btn-primary {
-      background: var(--accent);
       color: #fff;
+      background: linear-gradient(135deg, var(--accent), #14b8a6);
+      box-shadow: 0 10px 18px rgba(20, 184, 166, 0.25);
     }
 
-    .btn-primary:hover { background: var(--accent-hover); }
-
-    .btn-secondary {
-      background: #fff;
-      color: var(--ink);
-      border-color: var(--line);
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--accent-dark), #0d9488);
+      box-shadow: 0 12px 22px rgba(13, 148, 136, 0.3);
     }
 
-    .btn-secondary:hover { background: #f8fafc; }
+    .grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(12, 1fr);
+      margin-top: 18px;
+    }
 
     .card {
+      grid-column: span 12;
       background: var(--white);
       border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: var(--radius);
       padding: 24px;
-      margin-top: 20px;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
     }
 
-    code {
-      background: #f3f4f6;
-      padding: 2px 6px;
-      border-radius: 6px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 0.95em;
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: clamp(20px, 3vw, 26px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .notice {
+      background: var(--notice-bg);
+      border: 1.5px solid var(--notice-line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      color: var(--notice-ink);
+    }
+
+    ul { margin: 10px 0 0 20px; }
+    li { margin-bottom: 7px; }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .feature-list li {
+      margin: 0;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f8fafc;
     }
 
     footer {
-      margin-top: 34px;
-      color: var(--muted);
+      margin-top: 18px;
+      text-align: center;
+      color: #64748b;
       font-size: 14px;
+    }
+
+    @media (min-width: 860px) {
+      .card.notice-card { grid-column: span 7; }
+      .card.features-card { grid-column: span 5; }
     }
   </style>
 </head>
 <body>
   <main class="wrap">
     <section class="hero">
+      <div class="logo-wrap">
+        <img class="logo" src="assets/logo.png" alt="TreatIQ logo" />
+      </div>
       <h1>TreatIQ</h1>
-      <p>AI-assisted <strong>dental treatment planning support</strong> for clinicians.</p>
-      <p>
-        TreatIQ helps structure case information into a phased treatment plan document that can be reviewed,
+      <p class="subtitle">The AI Layer for Dental Care</p>
+      <p class="lead">
+        AI-assisted <strong>dental treatment planning support</strong> for clinicians.
+        TreatIQ helps structure case information into a phased treatment plan that can be reviewed,
         refined, and presented by a licensed dental professional.
       </p>
 
       <div class="btn-row">
         <a class="btn btn-primary" href="./app.html">Launch TreatIQ</a>
-        <a class="btn btn-secondary" href="https://github.com/musadentistry-hue/Dr-Schneider" target="_blank" rel="noopener">View Repository</a>
       </div>
     </section>
 
-    <section class="card">
-      <h2>Important Clinical Notice</h2>
-      <div class="notice">
-        <p>TreatIQ is a <strong>decision-support and educational tool only</strong>.</p>
-        <ul>
-          <li>It does <strong>not</strong> diagnose, prescribe, or replace professional clinical judgment.</li>
-          <li>All generated outputs must be independently reviewed, verified, and approved by a qualified dentist.</li>
-          <li>Any AI-generated radiographic observations are preliminary and must be confirmed against original images.</li>
-          <li>Literature references are informational only; applicability to an individual patient remains the clinician’s responsibility.</li>
-          <li>No guarantee is made regarding accuracy, completeness, or clinical outcomes.</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Features</h2>
-      <ul>
-        <li>Structured phased treatment plan generation:
+    <section class="grid">
+      <article class="card notice-card">
+        <h2>Important Clinical Notice</h2>
+        <div class="notice">
+          <p>TreatIQ is a <strong>decision-support and educational tool only</strong>.</p>
           <ul>
-            <li>Immediate Priority</li>
-            <li>Stabilisation</li>
-            <li>Rehabilitation</li>
-            <li>Aesthetics &amp; Optimisation</li>
+            <li>It does <strong>not</strong> diagnose, prescribe, or replace professional clinical judgment.</li>
+            <li>All generated outputs must be independently reviewed, verified, and approved by a qualified dentist.</li>
+            <li>Any AI-generated radiographic observations are preliminary and must be confirmed against original images.</li>
+            <li>Literature references are informational only; applicability to an individual patient remains the clinician’s responsibility.</li>
+            <li>No guarantee is made regarding accuracy, completeness, or clinical outcomes.</li>
           </ul>
-        </li>
-        <li>Optional AI-assisted radiographic observation drafting (for clinician review)</li>
-        <li>Supporting literature lookup from indexed sources (PubMed)</li>
-        <li>Print / Save as PDF output for case discussion</li>
-      </ul>
-    </section>
+        </div>
+      </article>
 
-    <section class="card">
-      <h2>Tech Stack</h2>
-      <ul>
-        <li>HTML</li>
-        <li>CSS</li>
-        <li>JavaScript</li>
-        <li>Deployed on Vercel</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>Project Structure</h2>
-      <ul>
-        <li><code>index.html</code> — presentation / landing page</li>
-        <li><code>app.html</code> — main TreatIQ application entrypoint</li>
-        <li><code>api/</code> — backend/API proxy logic (if configured)</li>
-        <li><code>vercel.json</code> — Vercel deployment configuration</li>
-      </ul>
+      <article class="card features-card">
+        <h2>What TreatIQ Helps With</h2>
+        <ul class="feature-list">
+          <li>Structured phased treatment planning for case communication</li>
+          <li>Optional AI-assisted radiographic observation drafting</li>
+          <li>Supporting indexed literature lookup (PubMed)</li>
+          <li>Print / Save as PDF output for patient discussion</li>
+        </ul>
+      </article>
     </section>
 
     <footer>
