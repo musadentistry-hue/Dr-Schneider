@@ -1,57 +1,72 @@
-# DentaFlow - Dental Treatment Planning Tool
+# TreatIQ
 
-Welcome to **DentaFlow**, a comprehensive dental treatment planning tool designed to help dental students and professionals organize and manage patient treatment plans efficiently.
+AI-assisted **dental treatment planning support** for clinicians.
 
-## 📋 About DentaFlow
+TreatIQ helps structure case information into a phased treatment plan document that can be reviewed, refined, and presented by a licensed dental professional.
 
-DentaFlow is an interactive HTML-based application that simplifies the process of creating, organizing, and tracking dental treatment plans. Whether you're a dental student learning treatment planning or a professional managing patient cases, DentaFlow provides an intuitive interface to help you succeed.
+## Important Clinical Notice
 
-## 🚀 Features
+TreatIQ is a **decision-support and educational tool only**.
 
-- **Treatment Plan Organization** - Organize dental procedures and treatment phases
-- **Patient Case Management** - Track patient information and treatment progress
-- **Easy to Use** - Simple, intuitive interface accessible from any browser
-- **No Installation Required** - Works directly in your web browser
+- It does **not** diagnose, prescribe, or replace professional clinical judgment.
+- All generated outputs must be independently reviewed, verified, and approved by a qualified dentist.
+- Any AI-generated radiographic observations are preliminary and must be confirmed against original images.
+- Literature references are informational only; applicability to an individual patient remains the clinician’s responsibility.
+- No guarantee is made regarding accuracy, completeness, or clinical outcomes.
 
-## 📖 How to Use
+## Features
 
-### Online (Recommended)
-Visit the live version of DentaFlow: [DentaFlow Online](https://musadentistry-hue.github.io/Dr-Schneider/)
+- Structured phased treatment plan generation:
+  - Immediate Priority
+  - Stabilisation
+  - Rehabilitation
+  - Aesthetics & Optimisation
+- Optional AI-assisted radiographic observation drafting (for clinician review)
+- Supporting literature lookup from indexed sources (PubMed)
+- Print / Save as PDF output for case discussion
 
-### Local Use
-1. Clone or download this repository
-2. Open `dentaflow.html` in your web browser
-3. Start planning!
+## Tech Stack
 
-## 📁 Files
+- HTML
+- CSS
+- JavaScript
+- Deployed on Vercel
 
-- `dentaflow.html` - The main DentaFlow application
-- `index.html` - Landing page for the application
-- `README.md` - This file
+## Project Structure
 
-## 👥 For Students
+- `index.html` — main TreatIQ application entrypoint
+- `api/` — backend/API proxy logic (if configured)
+- `vercel.json` — Vercel deployment configuration
 
-This tool is designed to help you:
-- Learn the principles of treatment planning
-- Organize complex cases step-by-step
-- Practice clinical decision-making
-- Prepare for exams and clinical rotations
+## Local Development
 
-## 💡 Tips for Success
+Because this is a static web app, you can run it with any local static server.
 
-1. Start by gathering all patient information
-2. Document the chief complaint and treatment goals
-3. Plan treatment in phases (emergency, non-surgical, surgical, etc.)
-4. Review and adjust plans as needed
+Example using Python:
 
-## 📞 Support & Feedback
+```bash
+python -m http.server 8080
+```
 
-For questions or feedback, please reach out to your instructor or dental program coordinator.
+Then open:
 
-## 📄 License
+```text
+http://localhost:8080
+```
 
-This project is provided for educational purposes.
+## Deployment (Vercel)
 
----
+This repository is intended for Git-connected Vercel deployment:
 
-**Happy Treatment Planning!** 🦷
+1. Push changes to the production branch (e.g. `main`)
+2. Vercel auto-deploys the latest commit
+3. If needed, redeploy from Vercel Deployments with cache disabled
+
+## Branding Notes
+
+This repository is branded as **TreatIQ**.  
+Legacy DentaFlow references should be removed from active UI and documentation.
+
+## License
+
+Proprietary / internal use unless otherwise specified by the repository owner.
