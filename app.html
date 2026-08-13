@@ -550,6 +550,13 @@ Return ONLY strict JSON, no markdown fences, no extra text:
       })
     });
 
+    const contentType = res.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      const txt = await res.text();
+      console.error('Non-JSON /api/analyze-xray response:', txt.slice(0, 300));
+      throw new Error('X-ray analysis API is unavailable on this host. Please use the Vercel deployment.');
+    }
+
     const data = await res.json();
     if (!res.ok || data.error) throw new Error(data.error?.message || 'Analysis failed.');
 
@@ -738,6 +745,13 @@ Write in clear, empathetic, educational English. Never mention specific monetary
         ]
       })
     });
+
+    const contentType = res.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      const txt = await res.text();
+      console.error('Non-JSON /api/generate response:', txt.slice(0, 300));
+      throw new Error('Plan generation API is unavailable on this host. Please use the Vercel deployment.');
+    }
 
     const data = await res.json();
     console.log('API response:', JSON.stringify(data, null, 2));
