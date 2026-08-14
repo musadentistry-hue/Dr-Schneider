@@ -550,15 +550,22 @@ Return ONLY strict JSON, no markdown fences, no extra text:
       })
     });
 
-    const contentType = res.headers.get('content-type') || '';
-    if (!contentType.includes('application/json')) {
-      const txt = await res.text();
-      console.error('Non-JSON /api/analyze-xray response:', txt.slice(0, 300));
-      throw new Error('X-ray analysis API is unavailable on this host. Please use the Vercel deployment.');
+    let data;
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error('/api/analyze-xray non-OK response:', errText.slice(0, 500));
+      throw new Error(`Analysis failed (${res.status}): ${errText || 'Unknown server error'}`);
     }
 
-    const data = await res.json();
-    if (!res.ok || data.error) throw new Error(data.error?.message || 'Analysis failed.');
+    try {
+      data = await res.json();
+    } catch (parseErr) {
+      const fallbackText = await res.text().catch(() => '');
+      console.error('/api/analyze-xray JSON parse error. Raw response:', fallbackText.slice(0, 500));
+      throw new Error('X-ray analysis response was not valid JSON. Please try again.');
+    }
+
+    if (data.error) throw new Error(data.error?.message || data.error || 'Analysis failed.');
 
     const raw = data.content.map(b => b.text || '').join('');
     const jsonMatch = raw.match(/\{[\s\S]*\}/);
@@ -746,18 +753,25 @@ Write in clear, empathetic, educational English. Never mention specific monetary
       })
     });
 
-    const contentType = res.headers.get('content-type') || '';
-    if (!contentType.includes('application/json')) {
-      const txt = await res.text();
-      console.error('Non-JSON /api/generate response:', txt.slice(0, 300));
-      throw new Error('Plan generation API is unavailable on this host. Please use the Vercel deployment.');
+    let data;
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error('/api/generate non-OK response:', errText.slice(0, 500));
+      throw new Error(`API error (${res.status}): ${errText || 'Unknown server error'}`);
     }
 
-    const data = await res.json();
+    try {
+      data = await res.json();
+    } catch (parseErr) {
+      const fallbackText = await res.text().catch(() => '');
+      console.error('/api/generate JSON parse error. Raw response:', fallbackText.slice(0, 500));
+      throw new Error('Plan generation response was not valid JSON. Please try again.');
+    }
+
     console.log('API response:', JSON.stringify(data, null, 2));
 
-    if (!res.ok || data.error) {
-      const errMsg = data.error?.message || JSON.stringify(data);
+    if (data.error) {
+      const errMsg = data.error?.message || data.error || JSON.stringify(data);
       throw new Error('API error: ' + errMsg);
     }
 
@@ -910,6 +924,3 @@ function resetForm() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
-
-
-</body></html>
